@@ -4,16 +4,17 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 // precedence of operators
-var priorities map[string]int
+var priorities map[string]float64
 
 // associativities of operators
 var associativities map[string]bool
 
 func init() {
-	priorities = make(map[string]int, 0)
+	priorities = make(map[string]float64, 0)
 	associativities = make(map[string]bool, 0)
 
 	priorities["+"] = 0
@@ -103,7 +104,7 @@ func Parse(tokens []string) ([]*RPNToken, error) {
 
 // tryGetOperand determines whether a given string is an operand, if it is, an RPN operand token will be returned, otherwise nil.
 func tryGetOperand(str string) *RPNToken {
-	value, err := strconv.Atoi(str)
+	value, err := strconv.ParseFloat(strings.TrimSpace(str), 64)
 	if err != nil {
 		return nil
 	}

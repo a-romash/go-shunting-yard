@@ -14,7 +14,7 @@ type RPNToken struct {
 }
 
 // NewRPNOperandToken creates an instance of operand RPNToken with specified value.
-func NewRPNOperandToken(val int) *RPNToken {
+func NewRPNOperandToken(val float64) *RPNToken {
 	return NewRPNToken(val, RPNTokenTypeOperand)
 }
 
@@ -29,8 +29,8 @@ func NewRPNToken(val interface{}, typ int) *RPNToken {
 }
 
 // IsOperand determines whether a token is an operand with a specified value.
-func (token *RPNToken) IsOperand(val int) bool {
-	return token.Type == RPNTokenTypeOperand && token.Value.(int) == val
+func (token *RPNToken) IsOperand(val float64) bool {
+	return token.Type == RPNTokenTypeOperand && token.Value.(float64) == val
 }
 
 // IsOperator determines whether a token is an operator with a specified value.
