@@ -1,17 +1,17 @@
 # go-shunting-yard
 
-[![Build Status](https://travis-ci.org/mgenware/go-shunting-yard.svg?branch=master)](http://travis-ci.org/mgenware/go-shunting-yard)
+[![Build Status](https://travis-ci.org/a-romash/go-shunting-yard.svg?branch=master)](http://travis-ci.org/a-romash/go-shunting-yard)
 
 
 A simple implementation of shunting-yard algorithm in Go(Golang).
 
 ## Installation
 ```sh
-go get github.com/mgenware/go-shunting-yard
+go get github.com/a-romash/go-shunting-yard
 ```
 
 ## Documentation
-[![GoDoc](https://godoc.org/github.com/mgenware/go-shunting-yard?status.svg)](http://godoc.org/github.com/mgenware/go-shunting-yard)
+[![GoDoc](https://godoc.org/github.com/a-romash/go-shunting-yard?status.svg)](http://godoc.org/github.com/a-romash/go-shunting-yard)
 
 ## Supported Operators
 
@@ -27,7 +27,7 @@ go get github.com/mgenware/go-shunting-yard
 import (
 	"fmt"
 
-	"github.com/mgenware/go-shunting-yard"
+	"github.com/a-romash/go-shunting-yard"
 )
 
 func main() {

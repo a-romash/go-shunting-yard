@@ -55,13 +55,13 @@ func Parse(tokens []string) ([]*RPNToken, error) {
 					}
 				}
 				if !foundLeftParenthesis {
-					return nil, errors.New("Mismatched parentheses found")
+					return nil, errors.New("mismatched parentheses found")
 				}
 			} else {
 				// operator priority and associativity
 				priority, ok := priorities[token]
 				if !ok {
-					return nil, fmt.Errorf("Unknown operator: %v", token)
+					return nil, fmt.Errorf("unknown operator: %v", token)
 				}
 				rightAssociative := associativities[token]
 
@@ -95,7 +95,7 @@ func Parse(tokens []string) ([]*RPNToken, error) {
 		operators = operators[:len(operators)-1]
 
 		if operator == "(" {
-			return nil, errors.New("Mismatched parentheses found")
+			return nil, errors.New("mismatched parentheses found")
 		}
 		ret = append(ret, NewRPNOperatorToken(operator))
 	}

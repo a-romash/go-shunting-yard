@@ -20,7 +20,7 @@ func Evaluate(tokens []*RPNToken) (float64, error) {
 		} else {
 			// execute current operator
 			if len(stack) < 2 {
-				return 0, errors.New("Missing operand")
+				return 0, errors.New("missing operand")
 			}
 			// pop 2 elements
 			arg1, arg2 := stack[len(stack)-2], stack[len(stack)-1]
@@ -34,7 +34,7 @@ func Evaluate(tokens []*RPNToken) (float64, error) {
 		}
 	}
 	if len(stack) != 1 {
-		return 0, errors.New("Stack corrupted")
+		return 0, errors.New("stack corrupted")
 	}
 	return stack[len(stack)-1], nil
 }
@@ -53,6 +53,6 @@ func evaluateOperator(oper string, a, b float64) (float64, error) {
 	case "^":
 		return float64(math.Pow(float64(a), float64(b))), nil
 	default:
-		return 0, errors.New("Unknown operator: " + oper)
+		return 0, errors.New("unknown operator: " + oper)
 	}
 }

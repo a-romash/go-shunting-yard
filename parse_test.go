@@ -1,25 +1,82 @@
 package shuntingYard
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestParse(t *testing.T) {
-	tokens, err := Parse([]string{"1", "-", "32", "*", "3"})
-	if err != nil {
-		panic(err)
+	cases := []struct {
+		name       string
+		expression interface{}
+		want       []*RPNToken
+		wantErr    bool
+	}{
+		{
+			name:       "empty string",
+			expression: "",
+			want:       []*RPNToken{},
+			wantErr:    false,
+		},
+		{
+			name:       "correct expression",
+			expression: "1+2*(2-3)^3",
+			want:       []*RPNToken{NewRPNOperandToken(1), NewRPNOperandToken(2), NewRPNOperandToken(2), NewRPNOperandToken(3), NewRPNOperatorToken("-"), NewRPNOperandToken(3), NewRPNOperatorToken("^"), NewRPNOperatorToken("*"), NewRPNOperatorToken("+")},
+			wantErr:    false,
+		},
+		{
+			name:       "incorrect brackets (opening)",
+			expression: "1+(2",
+			want:       []*RPNToken{},
+			wantErr:    true,
+		},
+		{
+			name:       "incorrect bracket (closing)",
+			expression: "1+2)",
+			want:       []*RPNToken{},
+			wantErr:    true,
+		},
+		{
+			name:       "unknown operator",
+			expression: []string{"hello world"},
+			want:       []*RPNToken{},
+			wantErr:    true,
+		},
 	}
-	if !tokens[0].IsOperand(1) {
-		t.Fatalf("Expected '1', Got %v", tokens[0].GetDescription())
+
+	for _, tc := range cases {
+		tc := tc
+		// запуск отдельного теста
+		t.Run(tc.name, func(t *testing.T) {
+			// тестируем функцию Evaluate
+			var tokens []string
+			switch tc.expression.(type) {
+			case string:
+				tokens, _ = Scan(tc.expression.(string))
+			case []string:
+				tokens = tc.expression.([]string)
+			}
+			got, err := Parse(tokens)
+			// проверим полученное значение
+			if (err != nil && !tc.wantErr) || (err == nil && tc.wantErr) {
+				t.Errorf("got err: %v; want err: %v", err != nil, tc.wantErr)
+			} else if !Equal(got, tc.want) {
+				t.Errorf("got %v; want %v", got, tc.want)
+			}
+		})
 	}
-	if !tokens[1].IsOperand(32) {
-		t.Fatalf("Expected '32', Got %v", tokens[1].GetDescription())
+}
+
+func Equal(slice1, slice2 []*RPNToken) (isEqual bool) {
+	isEqual = true
+	if len(slice1) != len(slice2) {
+		isEqual = false
+		return isEqual
 	}
-	if !tokens[2].IsOperand(3) {
-		t.Fatalf("Expected '3', Got %v", tokens[2].GetDescription())
+	for i := 0; i < len(slice1); i++ {
+		if (slice1[i].Value != slice2[i].Value) && (slice1[i].Type != slice2[i].Type) {
+			isEqual = false
+			return isEqual
+		}
 	}
-	if !tokens[3].IsOperator("*") {
-		t.Fatalf("Expected '*', Got %v", tokens[3].GetDescription())
-	}
-	if !tokens[4].IsOperator("-") {
-		t.Fatalf("Expected '-', Got %v", tokens[4].GetDescription())
-	}
+	return isEqual
 }
